@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
+import fragment from './shaders/fragment.glsl'
+import vertex from './shaders/vertex.glsl'
 
 export default class Sketch{
     constructor(options){
@@ -12,7 +14,8 @@ export default class Sketch{
 
 	    this.scene = new THREE.Scene();
 
-        this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+        this.renderer = new THREE.WebGLRenderer( { antialias: true,
+        alpha: true } );
         //this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setPixelRatio(2)
         this.container.appendChild(this.renderer.domElement);
@@ -39,8 +42,23 @@ export default class Sketch{
     }
 
     addObjects(){
-        this.geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-	    this.material = new THREE.MeshNormalMaterial();
+        // this.geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
+        this.geometry = new THREE.PlaneBufferGeometry( 0.5, 0.5);
+        // this.geometry = new THREE.SphereBufferGeometry( 0.2, 3, 3 );
+	    // this.material = new THREE.MeshNormalMaterial();
+        // this.material = new THREE.MeshBasicMaterial({
+        //     color: 0xffff00
+        // });
+        // this.material = new THREE.MeshLambertMaterial()
+
+        this.material = new THREE.ShaderMaterial({
+            uniforms: {
+                time: { value: 1.0 },
+                resolution: { value: new THREE.Vector2() }
+            },
+            vertexShader: vertex,
+            fragmentShader: fragment,
+        })
 
 	    this.mesh = new THREE.Mesh( this.geometry, this.material );
 	    this.scene.add( this.mesh );

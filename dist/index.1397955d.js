@@ -441,7 +441,8 @@ class Sketch {
     this.camera.position.z = 1;
     this.scene = new _three.Scene();
     this.renderer = new _three.WebGLRenderer({
-      antialias: true
+      antialias: true,
+      alpha: true
     });
     // this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setPixelRatio(2);
@@ -465,7 +466,22 @@ class Sketch {
   }
   addObjects() {
     this.geometry = new _three.BoxGeometry(0.2, 0.2, 0.2);
+    this.geometry = new _three.SphereBufferGeometry(0.2, 3, 3);
     this.material = new _three.MeshNormalMaterial();
+    this.material = new _three.MeshBasicMaterial({
+      color: 0xffff00
+    });
+    this.material = new _three.MeshLambertMaterial();
+    this.material = new _three.ShaderMaterial({
+      uniforms: {
+        time: {
+          value: 1.0
+        },
+        resolution: {
+          value: new _three.Vector2()
+        }
+      }
+    });
     this.mesh = new _three.Mesh(this.geometry, this.material);
     this.scene.add(this.mesh);
   }
