@@ -42,16 +42,9 @@ export default class Sketch{
     }
 
     addObjects(){
-        // this.geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-        this.geometry = new THREE.PlaneBufferGeometry( 0.5, 0.5);
-        // this.geometry = new THREE.SphereBufferGeometry( 0.2, 3, 3 );
-	    // this.material = new THREE.MeshNormalMaterial();
-        // this.material = new THREE.MeshBasicMaterial({
-        //     color: 0xffff00
-        // });
-        // this.material = new THREE.MeshLambertMaterial()
-
+        this.geometry = new THREE.PlaneBufferGeometry( 0.5, 0.5, 100, 100);
         this.material = new THREE.ShaderMaterial({
+            wireframe: true,
             uniforms: {
                 time: { value: 1.0 },
                 resolution: { value: new THREE.Vector2() }

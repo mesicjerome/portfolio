@@ -37152,7 +37152,7 @@ exports.MapControls = MapControls;
 },{"three":"node_modules/three/build/three.module.js"}],"shaders/fragment.glsl":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nvoid main() {\n    gl_FragColor = vec4( 1.,0.,0.,1.);    \n}";
 },{}],"shaders/vertex.glsl":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nvoid main() {\n    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}";
+module.exports = "#define GLSLIFY 1\nvoid main() {\n    vec3 newPosition = position;\n    newPosition.z = 0.1*sin(newPosition.x*30.);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );\n}";
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
 
@@ -37223,15 +37223,9 @@ var Sketch = /*#__PURE__*/function () {
   }, {
     key: "addObjects",
     value: function addObjects() {
-      // this.geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-      this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5); // this.geometry = new THREE.SphereBufferGeometry( 0.2, 3, 3 );
-      // this.material = new THREE.MeshNormalMaterial();
-      // this.material = new THREE.MeshBasicMaterial({
-      //     color: 0xffff00
-      // });
-      // this.material = new THREE.MeshLambertMaterial()
-
+      this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 100, 100);
       this.material = new THREE.ShaderMaterial({
+        wireframe: true,
         uniforms: {
           time: {
             value: 1.0
@@ -37293,7 +37287,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57340" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57361" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
