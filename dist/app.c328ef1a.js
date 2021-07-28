@@ -37150,9 +37150,9 @@ class MapControls extends OrbitControls {
 
 exports.MapControls = MapControls;
 },{"three":"node_modules/three/build/three.module.js"}],"shaders/fragment.glsl":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform float time;\nuniform sampler2D uTexture;\n\nvarying float pulse;\nvarying vec2 vUv;\n\nvoid main() {\n    // gl_FragColor = vec4(0.,0.,1.,1.);\n\n    vec4 myimage = texture(\n        uTexture,\n        vUv + 0.01*sin(vUv*20. + time)\n        ); \n\n    float sinePulse = (1. + sin(vUv.x*50. - time))*0.5;\n    gl_FragColor = vec4( vUv,0.,1.);\n    gl_FragColor = vec4( sinePulse,0.,0.,1.); \n    gl_FragColor = myimage;     \n}";
+module.exports = "#define GLSLIFY 1\nuniform float time;\n\nvoid main() {\n    gl_FragColor = vec4(1.,0.,0.,1.);     \n}";
 },{}],"shaders/vertex.glsl":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform float time;\nvarying float pulse;\n\nvarying vec2 vUv;\nvoid main() {\n    vUv = uv;\n    vec3 newPosition = position;\n    newPosition.z = 0.05*sin(length(position)*30. + time);\n    pulse = 20.*newPosition.z;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}";
+module.exports = "#define GLSLIFY 1\nuniform float time;\n\nvoid main() {\n    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}";
 },{}],"water.jpg":[function(require,module,exports) {
 module.exports = "/water.a2752b90.jpg";
 },{}],"app.js":[function(require,module,exports) {
@@ -37228,7 +37228,6 @@ var Sketch = /*#__PURE__*/function () {
     key: "addObjects",
     value: function addObjects() {
       this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 100, 100);
-      this.geometry = new THREE.SphereBufferGeometry(0.5, 30, 30);
       console.log(this.geometry);
       this.material = new THREE.ShaderMaterial({
         // wireframe: true,
