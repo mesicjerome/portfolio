@@ -37152,7 +37152,7 @@ exports.MapControls = MapControls;
 },{"three":"node_modules/three/build/three.module.js"}],"shaders/fragment.glsl":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nuniform float time;\nuniform float uProgress;\nuniform sampler2D uTexture;\nvarying vec2 vUv;\n\nvoid main() {\n    vec4 image = texture(uTexture,vUv);\n    gl_FragColor = vec4(vUv,0.,1.);   \n    gl_FragColor = image;  \n}";
 },{}],"shaders/vertex.glsl":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nuniform float time;\nuniform float uProgress;\n\nvarying vec2 vUv;\nvoid main() {\n    vUv = uv;\n    vec4 defaultState = modelMatrix*vec4( position, 1.0 );\n    vec4 fullScreenState = vec4( position, 1.0 );\n\n    vec4 finalState = mix(defaultState, fullScreenState,uProgress);\n    \n    gl_Position = projectionMatrix * viewMatrix * finalState;\n\n}";
+module.exports = "#define GLSLIFY 1\nuniform float time;\nuniform float uProgress;\nuniform vec2 uResolution;\nuniform vec2 uQuadSize;\n\nvarying vec2 vUv;\nvoid main() {\n    vUv = uv;\n    vec4 defaultState = modelMatrix*vec4( position, 1.0 );\n    vec4 fullScreenState = vec4( position, 1.0 );\n    fullScreenState.x *=uResolution.x/uQuadSize.x;\n    fullScreenState.y *=uResolution.y/uQuadSize.y;\n\n    vec4 finalState = mix(defaultState, fullScreenState,uProgress);\n    \n    gl_Position = projectionMatrix * viewMatrix * finalState;\n\n}";
 },{}],"texture.jpg":[function(require,module,exports) {
 module.exports = "/texture.c370f71b.jpg";
 },{}],"node_modules/dat.gui/build/dat.gui.module.js":[function(require,module,exports) {
@@ -40162,8 +40162,11 @@ var Sketch = /*#__PURE__*/function () {
           uTexture: {
             value: new THREE.TextureLoader().load(_texture.default)
           },
-          resolution: {
-            value: new THREE.Vector2()
+          uResolution: {
+            value: new THREE.Vector2(this.width, this.height)
+          },
+          uQuadSize: {
+            value: new THREE.Vector2(300, 300)
           }
         },
         vertexShader: _vertex.default,
