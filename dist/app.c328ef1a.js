@@ -37152,7 +37152,7 @@ exports.MapControls = MapControls;
 },{"three":"node_modules/three/build/three.module.js"}],"shaders/fragment.glsl":[function(require,module,exports) {
 module.exports = "#define GLSLIFY 1\nvoid main() {\n    gl_FragColor = vec4( 1.,0.,0.,1.);    \n}";
 },{}],"shaders/vertex.glsl":[function(require,module,exports) {
-module.exports = "#define GLSLIFY 1\nvoid main() {\n    vec3 newPosition = position;\n    newPosition.z = 0.1*sin(newPosition.x*30.);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );\n}";
+module.exports = "#define GLSLIFY 1\nuniform float time;\n\nvoid main() {\n    vec3 newPosition = position;\n    newPosition.z = 0.1*sin(newPosition.x*30. + time);\n    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );\n}";
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
 
@@ -37224,6 +37224,7 @@ var Sketch = /*#__PURE__*/function () {
     key: "addObjects",
     value: function addObjects() {
       this.geometry = new THREE.PlaneBufferGeometry(0.5, 0.5, 100, 100);
+      console.log(this.geometry);
       this.material = new THREE.ShaderMaterial({
         wireframe: true,
         uniforms: {
@@ -37244,6 +37245,7 @@ var Sketch = /*#__PURE__*/function () {
     key: "render",
     value: function render() {
       this.time += 0.05;
+      this.material.uniforms.time.value = this.time;
       this.mesh.rotation.x = this.time / 2000;
       this.mesh.rotation.y = this.time / 1000;
       this.renderer.render(this.scene, this.camera); //console.log(this.time);
